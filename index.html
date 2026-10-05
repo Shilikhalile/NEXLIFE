@@ -1,673 +1,205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>NEXLIFE — Your Real Life Is Your Game</title>
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d0b">
+  <meta name="description" content="Turn the life you want into quests you can complete. NEXLIFE is your private, offline-ready real-life RPG.">
+  <title>NEXLIFE — Your life, in progress</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main sidebar">
+      <a class="brand" href="#dashboard" aria-label="NEXLIFE dashboard">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>NEXLIFE</strong><small>REAL LIFE RPG</small></span>
+      </a>
 
-<div class="app">
+      <div class="player-mini">
+        <div class="avatar" aria-hidden="true">✦</div>
+        <div class="player-mini-info"><strong id="sidePlayerName">PLAYER</strong><span>Level <b id="sideLevel">1</b></span></div>
+        <button class="icon-button profile-edit" id="editProfile" aria-label="Edit player profile" title="Edit profile">↗</button>
+      </div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+      <p class="nav-caption">YOUR SPACE</p>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-page="dashboard" aria-current="page" aria-label="Overview" title="Overview"><span class="nav-icon">⌂</span><span>Overview</span></button>
+        <button class="nav-item" data-page="study" aria-label="Study" title="Study"><span class="nav-icon">◈</span><span>Study</span></button>
+        <button class="nav-item" data-page="trading" aria-label="Trading" title="Trading"><span class="nav-icon">↗</span><span>Trading</span></button>
+        <button class="nav-item" data-page="fitness" aria-label="Fitness" title="Fitness"><span class="nav-icon">✳</span><span>Fitness</span></button>
+        <button class="nav-item" data-page="projects" aria-label="Projects" title="Projects"><span class="nav-icon">⌘</span><span>Projects</span></button>
+        <button class="nav-item" data-page="growth" aria-label="Self growth" title="Self growth"><span class="nav-icon">◎</span><span>Self growth</span></button>
+      </nav>
 
-        <div class="brand">
-            <div class="brand-logo">N</div>
-
-            <div>
-                <h1>NEXLIFE</h1>
-                <span>REAL LIFE RPG</span>
-            </div>
-        </div>
-
-        <div class="player-mini">
-
-            <div class="avatar">⚡</div>
-
-            <div class="player-mini-info">
-                <strong>PLAYER</strong>
-                <span>Level <b id="sideLevel">1</b></span>
-            </div>
-
-        </div>
-
-        <nav>
-
-            <button class="nav-item active" data-page="dashboard">
-                <span>⌂</span>
-                Dashboard
-            </button>
-
-            <button class="nav-item" data-page="study">
-                <span>🎓</span>
-                Study
-            </button>
-
-            <button class="nav-item" data-page="trading">
-                <span>📈</span>
-                Trading
-            </button>
-
-            <button class="nav-item" data-page="fitness">
-                <span>🏋️</span>
-                Fitness
-            </button>
-
-            <button class="nav-item" data-page="projects">
-                <span>💻</span>
-                Projects
-            </button>
-
-            <button class="nav-item" data-page="growth">
-                <span>🧠</span>
-                Self Growth
-            </button>
-
-        </nav>
-
-        <div class="sidebar-bottom">
-
-            <div class="side-stat">
-                <span>🔥 Streak</span>
-                <strong id="sideStreak">0</strong>
-            </div>
-
-            <div class="side-stat">
-                <span>⭐ XP</span>
-                <strong id="sideXP">0</strong>
-            </div>
-
-        </div>
-
+      <div class="sidebar-bottom">
+        <div class="side-stat"><span>Current streak</span><strong><span id="sideStreak">0</span><i> days</i></strong></div>
+        <div class="side-stat"><span>Lifetime XP</span><strong id="sideXP">0</strong></div>
+        <div class="privacy-note"><span class="privacy-dot"></span><span>Your progress stays on this device.</span></div>
+      </div>
     </aside>
 
-
-    <!-- MAIN -->
-    <main class="main">
-
-        <!-- TOPBAR -->
-        <header class="topbar">
-
-            <div>
-                <p class="eyebrow">YOUR LIFE • YOUR GAME</p>
-                <h2 id="pageTitle">Dashboard</h2>
-            </div>
-
-            <div class="date-box" id="dateBox"></div>
-
-        </header>
-
-
-        <!-- DASHBOARD -->
-        <section class="page active" id="dashboard">
-
-            <!-- PLAYER CARD -->
-            <div class="hero-card">
-
-                <div class="hero-left">
-
-                    <div class="big-avatar">
-                        ⚡
-                    </div>
-
-                    <div class="player-info">
-
-                        <span class="small-label">
-                            CURRENT PLAYER
-                        </span>
-
-                        <h3>LEVEL <span id="level">1</span></h3>
-
-                        <div class="xp-row">
-
-                            <span id="xpText">
-                                0 / 500 XP
-                            </span>
-
-                        </div>
-
-                        <div class="xp-bar">
-                            <div id="xpFill"></div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="hero-stats">
-
-                    <div>
-                        <span>TOTAL XP</span>
-                        <strong id="totalXP">0</strong>
-                    </div>
-
-                    <div>
-                        <span>TODAY XP</span>
-                        <strong id="todayXP">0</strong>
-                    </div>
-
-                    <div>
-                        <span>STREAK</span>
-                        <strong id="streak">0 🔥</strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- DAILY PROGRESS -->
-            <div class="section-header">
-
-                <div>
-                    <span class="section-label">TODAY</span>
-                    <h3>Daily Progress</h3>
-                </div>
-
-                <div class="progress-percent" id="progressPercent">
-                    0%
-                </div>
-
-            </div>
-
-            <div class="daily-progress">
-
-                <div class="daily-progress-fill" id="dailyProgressFill"></div>
-
-            </div>
-
-
-            <!-- BOSS -->
-            <div class="boss-card">
-
-                <div class="boss-icon">
-                    👹
-                </div>
-
-                <div class="boss-content">
-
-                    <span class="boss-label">
-                        DAILY BOSS
-                    </span>
-
-                    <h3>Conquer Your Day</h3>
-
-                    <p>
-                        Complete all your quests and defeat today's boss.
-                    </p>
-
-                </div>
-
-                <button id="completeBoss" class="boss-button">
-                    DEFEAT BOSS
-                    <span>+100 XP</span>
-                </button>
-
-            </div>
-
-
-            <!-- QUESTS -->
-            <div class="section-header">
-
-                <div>
-                    <span class="section-label">MISSIONS</span>
-                    <h3>Today's Quests</h3>
-                </div>
-
-                <button class="add-button" id="openQuest">
-                    + Add Quest
-                </button>
-
-            </div>
-
-            <div class="quest-list" id="questList"></div>
-
-
-            <!-- DOMAINS -->
-            <div class="section-header domain-header">
-
-                <div>
-                    <span class="section-label">LEVEL UP</span>
-                    <h3>Your Domains</h3>
-                </div>
-
-            </div>
-
-            <div class="domain-grid">
-
-                <button class="domain-card study" data-domain="study">
-
-                    <div class="domain-icon">🎓</div>
-
-                    <div>
-                        <strong>Study</strong>
-                        <span>Knowledge XP</span>
-                    </div>
-
-                    <b>+XP</b>
-
-                </button>
-
-
-                <button class="domain-card trading" data-domain="trading">
-
-                    <div class="domain-icon">📈</div>
-
-                    <div>
-                        <strong>Trading</strong>
-                        <span>Market XP</span>
-                    </div>
-
-                    <b>+XP</b>
-
-                </button>
-
-
-                <button class="domain-card fitness" data-domain="fitness">
-
-                    <div class="domain-icon">🏋️</div>
-
-                    <div>
-                        <strong>Fitness</strong>
-                        <span>Strength XP</span>
-                    </div>
-
-                    <b>+XP</b>
-
-                </button>
-
-
-                <button class="domain-card projects" data-domain="projects">
-
-                    <div class="domain-icon">💻</div>
-
-                    <div>
-                        <strong>Projects</strong>
-                        <span>Builder XP</span>
-                    </div>
-
-                    <b>+XP</b>
-
-                </button>
-
-
-                <button class="domain-card growth" data-domain="growth">
-
-                    <div class="domain-icon">🧠</div>
-
-                    <div>
-                        <strong>Self Growth</strong>
-                        <span>Mind XP</span>
-                    </div>
-
-                    <b>+XP</b>
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- STUDY -->
-        <section class="page" id="study">
-
-            <div class="domain-page study-page">
-
-                <div class="domain-page-icon">🎓</div>
-
-                <span>DOMAIN</span>
-
-                <h2>Study</h2>
-
-                <p>
-                    Build knowledge. Master your subjects.
-                </p>
-
-                <div class="domain-tips">
-
-                    <div>
-                        <b>📚 Focus Session</b>
-                        <span>Study for 30 minutes.</span>
-                    </div>
-
-                    <div>
-                        <b>📝 Review</b>
-                        <span>Review what you learned today.</span>
-                    </div>
-
-                    <div>
-                        <b>🎯 Challenge</b>
-                        <span>Complete one difficult exercise.</span>
-                    </div>
-
-                </div>
-
-                <button class="back-dashboard">
-                    ← Back to Dashboard
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- TRADING -->
-        <section class="page" id="trading">
-
-            <div class="domain-page trading-page">
-
-                <div class="domain-page-icon">📈</div>
-
-                <span>DOMAIN</span>
-
-                <h2>Trading</h2>
-
-                <p>
-                    Learn the market. Improve your discipline.
-                </p>
-
-                <div class="domain-tips">
-
-                    <div>
-                        <b>📊 Chart Analysis</b>
-                        <span>Analyze two charts.</span>
-                    </div>
-
-                    <div>
-                        <b>🧠 Journal</b>
-                        <span>Write one trading lesson.</span>
-                    </div>
-
-                    <div>
-                        <b>🎯 Risk Management</b>
-                        <span>Study one risk concept.</span>
-                    </div>
-
-                </div>
-
-                <button class="back-dashboard">
-                    ← Back to Dashboard
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- FITNESS -->
-        <section class="page" id="fitness">
-
-            <div class="domain-page fitness-page">
-
-                <div class="domain-page-icon">🏋️</div>
-
-                <span>DOMAIN</span>
-
-                <h2>Fitness</h2>
-
-                <p>
-                    Build your body. Build your discipline.
-                </p>
-
-                <div class="domain-tips">
-
-                    <div>
-                        <b>💪 Workout</b>
-                        <span>Complete your training session.</span>
-                    </div>
-
-                    <div>
-                        <b>🚶 Movement</b>
-                        <span>Get active during the day.</span>
-                    </div>
-
-                    <div>
-                        <b>💧 Recovery</b>
-                        <span>Take care of your body.</span>
-                    </div>
-
-                </div>
-
-                <button class="back-dashboard">
-                    ← Back to Dashboard
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- PROJECTS -->
-        <section class="page" id="projects">
-
-            <div class="domain-page projects-page">
-
-                <div class="domain-page-icon">💻</div>
-
-                <span>DOMAIN</span>
-
-                <h2>Projects</h2>
-
-                <p>
-                    Build things. Turn ideas into reality.
-                </p>
-
-                <div class="domain-tips">
-
-                    <div>
-                        <b>⚙️ Build</b>
-                        <span>Work on one project for 30 minutes.</span>
-                    </div>
-
-                    <div>
-                        <b>🚀 Ship</b>
-                        <span>Publish or improve something.</span>
-                    </div>
-
-                    <div>
-                        <b>💡 Create</b>
-                        <span>Develop one new idea.</span>
-                    </div>
-
-                </div>
-
-                <button class="back-dashboard">
-                    ← Back to Dashboard
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- SELF GROWTH -->
-        <section class="page" id="growth">
-
-            <div class="domain-page growth-page">
-
-                <div class="domain-page-icon">🧠</div>
-
-                <span>DOMAIN</span>
-
-                <h2>Self Growth</h2>
-
-                <p>
-                    Improve your mind. Become a stronger version of yourself.
-                </p>
-
-                <div class="domain-tips">
-
-                    <div>
-                        <b>📖 Read</b>
-                        <span>Read 10 pages.</span>
-                    </div>
-
-                    <div>
-                        <b>🧘 Reflect</b>
-                        <span>Spend 5 minutes reflecting.</span>
-                    </div>
-
-                    <div>
-                        <b>🎯 Plan</b>
-                        <span>Plan tomorrow's priorities.</span>
-                    </div>
-
-                </div>
-
-                <button class="back-dashboard">
-                    ← Back to Dashboard
-                </button>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</div>
-
-
-<!-- ADD QUEST MODAL -->
-<div class="modal" id="questModal">
-
-    <div class="modal-box">
-
-        <button class="close-modal" id="closeQuest">
-            ×
-        </button>
-
-        <span class="section-label">NEW MISSION</span>
-
-        <h2>Create Quest</h2>
-
-        <p>
-            Turn something you need to do into XP.
-        </p>
-
-        <form id="questForm">
-
-            <label>
-                Quest Name
-
-                <input
-                    id="questName"
-                    type="text"
-                    placeholder="Example: Study Economics"
-                    required
-                >
-
-            </label>
-
-
-            <label>
-                Domain
-
-                <select id="questDomain">
-
-                    <option value="study">
-                        🎓 Study
-                    </option>
-
-                    <option value="trading">
-                        📈 Trading
-                    </option>
-
-                    <option value="fitness">
-                        🏋️ Fitness
-                    </option>
-
-                    <option value="projects">
-                        💻 Projects
-                    </option>
-
-                    <option value="growth">
-                        🧠 Self Growth
-                    </option>
-
-                </select>
-
-            </label>
-
-
-            <label>
-                XP Reward
-
-                <input
-                    id="questReward"
-                    type="number"
-                    min="5"
-                    max="500"
-                    value="50"
-                    required
-                >
-
-            </label>
-
-
-            <label>
-                Description
-
-                <textarea
-                    id="questDescription"
-                    placeholder="What do you need to do?"
-                ></textarea>
-
-            </label>
-
-
-            <button class="create-button" type="submit">
-                CREATE QUEST
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-<!-- XP POPUP -->
-<div class="xp-popup" id="xpPopup">
-    <span>+XP</span>
-</div>
-
-
-<!-- LEVEL UP -->
-<div class="level-up" id="levelUp">
-
-    <div class="level-up-box">
-
-        <div class="level-up-icon">
-            ⚡
+    <main class="main-content">
+      <header class="topbar">
+        <div class="heading-group">
+          <p class="eyebrow"><span class="eyebrow-line"></span> BUILD A LIFE YOU’RE PROUD OF</p>
+          <h1 id="pageTitle">Your overview</h1>
+          <p class="page-subtitle" id="pageSubtitle">A little progress, repeated daily, becomes a lot.</p>
         </div>
+        <div class="topbar-actions">
+          <div class="date-chip"><span class="date-sparkle">✳</span><span id="dateBox"></span></div>
+          <button class="button button-quiet" id="exportData" type="button" title="Download a backup of your progress"><span aria-hidden="true">↓</span> <span class="export-label">Backup</span></button>
+        </div>
+      </header>
 
-        <span>LEVEL UP</span>
+      <section class="page active" id="dashboard" aria-labelledby="pageTitle">
+        <section class="hero-card" aria-label="Player level and experience">
+          <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+          <div class="hero-copy">
+            <div class="hero-kicker"><span class="live-dot"></span> YOUR JOURNEY, YOUR RULES</div>
+            <h2>Make today<br><em>count.</em></h2>
+            <p>Every small win moves you forward. Pick a quest and get started.</p>
+            <div class="level-progress">
+              <div class="level-topline"><span class="level-tag">LEVEL <b id="level">1</b></span><span class="xp-label" id="xpText">0 / 500 XP</span></div>
+              <div class="xp-track" role="progressbar" aria-label="Progress to next level" aria-valuemin="0" aria-valuemax="500" aria-valuenow="0"><div id="xpFill"></div></div>
+              <span class="next-level-copy">Keep going — your next level is closer than it feels.</span>
+            </div>
+          </div>
+          <div class="hero-emblem" aria-hidden="true"><div class="emblem-core">N<span>✦</span></div><div class="emblem-ring"></div><div class="emblem-ring ring-inner"></div><span class="orbit-star star-a">✦</span><span class="orbit-star star-b">·</span></div>
+          <div class="hero-stat-strip">
+            <div class="hero-stat"><span class="stat-symbol">✦</span><span class="stat-copy"><small>TOTAL EXPERIENCE</small><strong id="totalXP">0 <i>XP</i></strong></span></div>
+            <div class="stat-divider"></div>
+            <div class="hero-stat"><span class="stat-symbol today-symbol">↗</span><span class="stat-copy"><small>THIS DAY</small><strong id="todayXP">0 <i>XP</i></strong></span></div>
+            <div class="stat-divider"></div>
+            <div class="hero-stat"><span class="stat-symbol streak-symbol">♨</span><span class="stat-copy"><small>DAY STREAK</small><strong><span id="streak">0</span> <i>days</i></strong></span></div>
+          </div>
+        </section>
 
-        <h2>
-            LEVEL <b id="newLevel">2</b>
-        </h2>
+        <div class="dashboard-grid">
+          <div class="dashboard-main-column">
+            <section class="progress-panel panel">
+              <div class="section-heading compact-heading">
+                <div><p class="section-kicker">THE DAILY EDITION</p><h2>Today's progress</h2></div>
+                <div class="progress-score"><strong id="progressPercent">0%</strong><span id="dailyProgressText">0 of 5 quests</span></div>
+              </div>
+              <div class="daily-track" role="progressbar" aria-label="Today's quest completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="daily-progress-fill" id="dailyProgressFill"></div></div>
+              <div class="progress-foot"><span>One intentional step at a time.</span><span id="progressRemaining">5 left to go</span></div>
+            </section>
 
-        <p>
-            You're becoming stronger.
-        </p>
+            <section class="quests-section" aria-labelledby="questsHeading">
+              <div class="section-heading quests-heading">
+                <div><p class="section-kicker">MAKE IT HAPPEN</p><h2 id="questsHeading">Today's quests <span class="count-pill" id="questCount">0</span></h2></div>
+                <button class="button button-primary" id="openQuest" type="button"><span aria-hidden="true">＋</span> New quest</button>
+              </div>
+              <div class="quest-toolbar" role="group" aria-label="Filter quests">
+                <button class="filter-button active" data-filter="all" aria-pressed="true">All</button>
+                <button class="filter-button" data-filter="active" aria-pressed="false">In progress</button>
+                <button class="filter-button" data-filter="completed" aria-pressed="false">Completed</button>
+                <span class="quest-toolbar-spacer"></span><span class="quest-hint">Small wins add up.</span>
+              </div>
+              <div class="quest-list" id="questList" aria-live="polite"></div>
+            </section>
 
-        <button onclick="closeLevelUp()">
-            CONTINUE
-        </button>
+            <section class="domains-section" aria-labelledby="domainsHeading">
+              <div class="section-heading"><div><p class="section-kicker">YOUR PERSONAL CAMPAIGN</p><h2 id="domainsHeading">Choose your focus</h2></div><span class="section-aside">Five paths. One you.</span></div>
+              <div class="domain-grid">
+                <button class="domain-card study" data-domain="study"><span class="domain-icon">◈</span><span class="domain-title">Study</span><span class="domain-desc">Invest in what you know</span><span class="domain-arrow">↗</span></button>
+                <button class="domain-card trading" data-domain="trading"><span class="domain-icon">⌁</span><span class="domain-title">Trading</span><span class="domain-desc">Build patient discipline</span><span class="domain-arrow">↗</span></button>
+                <button class="domain-card fitness" data-domain="fitness"><span class="domain-icon">✳</span><span class="domain-title">Fitness</span><span class="domain-desc">Show up for your body</span><span class="domain-arrow">↗</span></button>
+                <button class="domain-card projects" data-domain="projects"><span class="domain-icon">⌘</span><span class="domain-title">Projects</span><span class="domain-desc">Make ideas real</span><span class="domain-arrow">↗</span></button>
+                <button class="domain-card growth" data-domain="growth"><span class="domain-icon">◎</span><span class="domain-title">Self growth</span><span class="domain-desc">Become more yourself</span><span class="domain-arrow">↗</span></button>
+              </div>
+            </section>
+          </div>
 
-    </div>
+          <aside class="dashboard-side-column" aria-label="Daily tools">
+            <section class="focus-card panel" aria-labelledby="focusHeading">
+              <div class="focus-card-top"><span class="focus-icon">◷</span><span class="focus-badge">FOCUS MODE</span><button class="help-tip" type="button" aria-label="A completed focus session awards 25 XP" title="Finish a 25-minute session to earn 25 XP">?</button></div>
+              <p class="section-kicker">MAKE SPACE FOR WHAT MATTERS</p>
+              <h2 id="focusHeading">Focus session</h2>
+              <p class="focus-description">One thing. No distractions. Just you and the work.</p>
+              <div class="timer-wrap"><svg class="timer-ring" viewBox="0 0 180 180" aria-hidden="true"><circle class="timer-track" cx="90" cy="90" r="78"></circle><circle class="timer-progress" id="timerProgress" cx="90" cy="90" r="78"></circle></svg><div class="timer-readout"><strong id="timerDisplay">25:00</strong><span id="timerStatus">READY WHEN YOU ARE</span></div></div>
+              <div class="timer-controls"><button class="button button-primary timer-start" id="timerToggle" type="button">Start focus</button><button class="button button-quiet timer-reset" id="timerReset" type="button" aria-label="Reset focus timer" title="Reset timer">↺</button></div>
+              <p class="timer-reward"><span>✦</span> +25 XP when you finish</p>
+            </section>
 
-</div>
+            <section class="boss-card panel" aria-labelledby="bossHeading">
+              <div class="boss-topline"><span class="boss-mark">✧</span><span class="boss-label">THE FINAL CHECK</span></div>
+              <h2 id="bossHeading">Daily boss</h2>
+              <p id="bossStatus">Complete all of today's quests to unlock your bonus.</p>
+              <div class="boss-progress-line"><span id="bossQuestCount">0 / 0 complete</span><span class="boss-reward">+100 XP</span></div>
+              <button id="completeBoss" class="boss-button" type="button" disabled>Finish today's quests first <span>→</span></button>
+            </section>
 
+            <section class="week-card panel" aria-labelledby="weekHeading">
+              <div class="week-card-heading"><div><p class="section-kicker">CONSISTENCY OVER INTENSITY</p><h2 id="weekHeading">This week</h2></div><span class="week-total" id="weekTotal">0 XP</span></div>
+              <div class="week-bars" id="weekActivity" aria-label="Experience earned in the last seven days"></div>
+              <div class="week-legend"><span><i></i> Daily XP</span><span id="weekDaysActive">0 active days</span></div>
+            </section>
+          </aside>
+        </div>
+      </section>
 
-<script src="script.js"></script>
+      <section class="page domain-page" id="study" aria-labelledby="studyTitle" hidden>
+        <div class="domain-hero domain-study"><span class="domain-hero-icon">◈</span><p class="section-kicker">YOUR KNOWLEDGE PATH</p><h2 id="studyTitle">Study</h2><p>Build knowledge deliberately. The goal isn't to know everything — it's to keep getting curious.</p><button class="button button-primary domain-add" data-create-domain="study">＋ Add a study quest</button></div>
+        <div class="domain-tip-grid"><article class="tip-card"><span>01 / FOCUS</span><h3>Protect a pocket of time</h3><p>Set a small target, silence distractions, and give one subject your full attention.</p></article><article class="tip-card"><span>02 / RETRIEVE</span><h3>Test what you remember</h3><p>Close the notes. Explain the idea in your own words before you look it up again.</p></article><article class="tip-card"><span>03 / CONNECT</span><h3>Make it stick</h3><p>Link new ideas to something you already understand. Curiosity does the rest.</p></article></div>
+      </section>
+      <section class="page domain-page" id="trading" aria-labelledby="tradingTitle" hidden>
+        <div class="domain-hero domain-trading"><span class="domain-hero-icon">⌁</span><p class="section-kicker">YOUR PATIENCE PATH</p><h2 id="tradingTitle">Trading</h2><p>Practice process over impulse. Learn the market with curiosity, discipline, and risk awareness.</p><button class="button button-primary domain-add" data-create-domain="trading">＋ Add a trading quest</button></div>
+        <div class="domain-tip-grid"><article class="tip-card"><span>01 / OBSERVE</span><h3>Study before you act</h3><p>Write down what you see in a chart without rushing to predict what comes next.</p></article><article class="tip-card"><span>02 / REFLECT</span><h3>Keep a learning journal</h3><p>Capture the lesson, not just the outcome. Clear thinking compounds over time.</p></article><article class="tip-card"><span>03 / PROTECT</span><h3>Respect the downside</h3><p>Learn position sizing and risk limits before you consider any strategy.</p></article></div>
+      </section>
+      <section class="page domain-page" id="fitness" aria-labelledby="fitnessTitle" hidden>
+        <div class="domain-hero domain-fitness"><span class="domain-hero-icon">✳</span><p class="section-kicker">YOUR STRENGTH PATH</p><h2 id="fitnessTitle">Fitness</h2><p>Build strength by meeting yourself where you are — and showing up again tomorrow.</p><button class="button button-primary domain-add" data-create-domain="fitness">＋ Add a fitness quest</button></div>
+        <div class="domain-tip-grid"><article class="tip-card"><span>01 / MOVE</span><h3>Make it repeatable</h3><p>Choose a session that fits your day. Consistency beats a perfect plan you can't keep.</p></article><article class="tip-card"><span>02 / RECOVER</span><h3>Rest is part of training</h3><p>Sleep, hydration, and recovery make effort sustainable. Listen to your body.</p></article><article class="tip-card"><span>03 / NOTICE</span><h3>Celebrate small progress</h3><p>More energy, better form, or simply showing up — progress has many shapes.</p></article></div>
+      </section>
+      <section class="page domain-page" id="projects" aria-labelledby="projectsTitle" hidden>
+        <div class="domain-hero domain-projects"><span class="domain-hero-icon">⌘</span><p class="section-kicker">YOUR BUILDER PATH</p><h2 id="projectsTitle">Projects</h2><p>Move from “someday” to a small, visible next step. Ideas become real when you build.</p><button class="button button-primary domain-add" data-create-domain="projects">＋ Add a project quest</button></div>
+        <div class="domain-tip-grid"><article class="tip-card"><span>01 / DEFINE</span><h3>Make the next step tiny</h3><p>Turn a big ambition into something you can start in ten focused minutes.</p></article><article class="tip-card"><span>02 / BUILD</span><h3>Make a rough first draft</h3><p>Something imperfect you can improve is more useful than an idea you only imagine.</p></article><article class="tip-card"><span>03 / SHARE</span><h3>Ship, learn, repeat</h3><p>Show your work to someone. Feedback turns building into learning.</p></article></div>
+      </section>
+      <section class="page domain-page" id="growth" aria-labelledby="growthTitle" hidden>
+        <div class="domain-hero domain-growth"><span class="domain-hero-icon">◎</span><p class="section-kicker">YOUR BECOMING PATH</p><h2 id="growthTitle">Self growth</h2><p>Get to know yourself better, keep your promises, and make room for a more intentional life.</p><button class="button button-primary domain-add" data-create-domain="growth">＋ Add a growth quest</button></div>
+        <div class="domain-tip-grid"><article class="tip-card"><span>01 / REFLECT</span><h3>Ask a better question</h3><p>What gave you energy today? What would you like to do a little differently tomorrow?</p></article><article class="tip-card"><span>02 / READ</span><h3>Stay open to new ideas</h3><p>A few considered pages can offer a fresh perspective or a useful new question.</p></article><article class="tip-card"><span>03 / RESET</span><h3>Plan a kinder tomorrow</h3><p>Choose one meaningful priority and let the rest of the day breathe.</p></article></div>
+      </section>
 
+      <footer class="app-footer"><span>© NEXLIFE · YOUR LIFE, IN PROGRESS</span><span>Private by design <i>✦</i> No account. No cloud. Just you.</span></footer>
+    </main>
+  </div>
+
+  <div class="modal" id="questModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <section class="modal-box" role="dialog" aria-modal="true" aria-labelledby="questModalTitle">
+      <button class="close-modal" id="closeQuest" type="button" aria-label="Close dialog">×</button>
+      <span class="section-kicker">MAKE A PROMISE TO YOURSELF</span><h2 id="questModalTitle">Create a quest</h2><p>Give your next small win a name. You can always change direction.</p>
+      <form id="questForm">
+        <label>Quest name<input id="questName" name="name" type="text" maxlength="72" placeholder="e.g. Read a chapter of economics" required></label>
+        <div class="form-row"><label>Choose a path<select id="questDomain" name="domain"><option value="study">◈ Study</option><option value="trading">⌁ Trading</option><option value="fitness">✳ Fitness</option><option value="projects">⌘ Projects</option><option value="growth">◎ Self growth</option></select></label><label>XP reward<input id="questReward" name="reward" type="number" min="5" max="500" value="50" required></label></div>
+        <label>What does done look like? <span class="optional-label">OPTIONAL</span><textarea id="questDescription" name="description" maxlength="180" placeholder="A few words to make the goal clear..."></textarea></label>
+        <button class="button button-primary create-button" type="submit">Add to today's quests <span>→</span></button>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal" id="profileModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <section class="modal-box profile-modal-box" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+      <button class="close-modal" id="closeProfile" type="button" aria-label="Close dialog">×</button>
+      <span class="section-kicker">MAKE THIS YOURS</span><h2 id="profileModalTitle">Your player profile</h2><p>Your profile and progress are stored only in this browser.</p>
+      <form id="profileForm"><label>Player name<input id="playerNameInput" name="playerName" type="text" maxlength="24" placeholder="PLAYER" autocomplete="nickname"></label><button class="button button-primary create-button" type="submit">Save profile <span>→</span></button></form>
+      <div class="backup-divider"><span>YOUR DATA</span></div>
+      <p class="backup-copy">Take your progress with you, or restore a previous NEXLIFE backup.</p>
+      <div class="backup-actions"><button class="button button-quiet" id="profileExport" type="button">↓ Export backup</button><label class="button button-quiet import-label" for="importData">↑ Restore backup<input id="importData" type="file" accept="application/json,.json"></label></div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="xp-popup" id="xpPopup" aria-live="polite"></div>
+  <div class="level-up" id="levelUp" aria-hidden="true"><div class="level-up-box" role="dialog" aria-modal="true" aria-labelledby="levelUpTitle"><div class="level-up-icon">✦</div><span>YOU DID THAT</span><h2 id="levelUpTitle">LEVEL <b id="newLevel">2</b></h2><p>Keep showing up. Look how far you've come.</p><button id="closeLevelUp" type="button">Keep going <span>→</span></button></div></div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
