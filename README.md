@@ -16,6 +16,7 @@
 - **Private by design:** quests, profile, XP, journal and settings stay in this browser's `localStorage`. There is no cloud synchronization; download a backup to transfer your save between devices.
 - **Installable and offline-ready:** a lightweight web app manifest and service worker cache the app shell after its first visit.
 - **Responsive and accessible:** keyboard-friendly controls, visible focus states, screen-reader labels, reduced-motion support and layouts for small screens.
+- **Dark and light themes:** switch from the top bar; your choice is saved in this browser, applied before first paint, and included in new backups. Dark remains the default look.
 
 ## Run locally
 
@@ -40,6 +41,7 @@ The GitHub Actions quality check runs on pushes and pull requests. It verifies J
 ├── index.html              # Dashboard, history, achievements, dialogs and PWA metadata
 ├── style.css               # Responsive visual system and components
 ├── script.js               # Quests, recurrence, progression, focus, reminders and local persistence
+├── theme-init.js           # Applies the saved color theme before first paint
 ├── manifest.webmanifest    # Installable web-app metadata
 ├── service-worker.js       # Offline app-shell cache and notification click handling
 ├── icon.svg                # NEXLIFE mark

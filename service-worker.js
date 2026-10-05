@@ -1,5 +1,5 @@
-const CACHE_NAME = 'nexlife-shell-v2';
-const APP_FILES = ['', 'index.html', 'style.css', 'script.js', 'manifest.webmanifest', 'icon.svg'];
+const CACHE_NAME = 'nexlife-shell-v3';
+const APP_FILES = ['', 'index.html', 'style.css', 'script.js', 'theme-init.js', 'manifest.webmanifest', 'icon.svg'];
 const APP_BASE = new URL('./', self.location.href);
 
 self.addEventListener('install', (event) => {

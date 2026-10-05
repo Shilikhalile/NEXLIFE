@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#090d0b">
   <meta name="description" content="Turn the life you want into quests you can complete. NEXLIFE is your private, offline-ready real-life RPG.">
   <title>NEXLIFE — Your life, in progress</title>
+  <script src="theme-init.js"></script>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,6 +53,7 @@
         </div>
         <div class="topbar-actions">
           <div class="date-chip"><span class="date-sparkle">✳</span><span id="dateBox"></span></div>
+          <button class="button button-quiet theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="true" title="Switch to light mode"><span class="theme-icon" id="themeIcon" aria-hidden="true">☀</span><span id="themeLabel">Light mode</span></button>
           <button class="button button-quiet" id="exportData" type="button" title="Download a backup of your progress"><span aria-hidden="true">↓</span> <span>Backup</span></button>
         </div>
       </header>

@@ -61,7 +61,7 @@ def main() -> None:
 
     required_ids = {
         "openTemplates", "templateGrid", "questRecurrence", "weeklyDays", "questForm", "historyList",
-        "achievementGrid", "challengeProgressFill", "focusDuration", "breakDuration", "reminderTime", "enableReminders",
+        "achievementGrid", "challengeProgressFill", "focusDuration", "breakDuration", "reminderTime", "enableReminders", "themeToggle",
     }
     missing_ids = sorted(required_ids - set(parser.ids))
     if missing_ids:
@@ -89,6 +89,11 @@ def main() -> None:
             fail(f"expected application feature is missing: {required}")
     if "[1, 2].includes(backup.version)" not in js:
         fail("version 1 and version 2 backup compatibility is missing")
+    if "function applyTheme" not in js or "nexlife_theme" not in js or "theme: currentTheme" not in js:
+        fail("persistent theme switching or backup support is missing")
+    theme_init = (ROOT / "theme-init.js").read_text(encoding="utf-8")
+    if 'document.documentElement.dataset.theme = theme' not in theme_init:
+        fail("early theme initialization is missing")
 
     css = (ROOT / "style.css").read_text(encoding="utf-8")
     if "@media (max-width: 650px)" not in css or "prefers-reduced-motion" not in css:

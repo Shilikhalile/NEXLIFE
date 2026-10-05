@@ -89,6 +89,7 @@
   let reminderInterval;
   let reminderTime = localStorage.getItem('nexlife_reminder_time') || 'off';
   let reminderLastSent = localStorage.getItem('nexlife_reminder_last_sent') || '';
+  let currentTheme = localStorage.getItem('nexlife_theme') === 'light' ? 'light' : 'dark';
   let focusMinutes = clamp(Number(localStorage.getItem('nexlife_focus_minutes')) || 25, 25, 60);
   if (![25, 45, 60].includes(focusMinutes)) focusMinutes = 25;
   let breakMinutes = clamp(Number(localStorage.getItem('nexlife_break_minutes')) || 5, 5, 15);
@@ -529,6 +530,22 @@
 
   function updateDate() { els.dateBox.textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }); }
 
+  function applyTheme(theme) {
+    currentTheme = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = currentTheme;
+    document.documentElement.style.colorScheme = currentTheme;
+    const isDark = currentTheme === 'dark';
+    const toggle = $('#themeToggle');
+    toggle.setAttribute('aria-pressed', String(isDark));
+    toggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
+    toggle.title = `Switch to ${isDark ? 'light' : 'dark'} mode`;
+    $('#themeIcon').textContent = isDark ? '☀' : '☾';
+    $('#themeLabel').textContent = isDark ? 'Light mode' : 'Dark mode';
+    $('meta[name="theme-color"]').content = isDark ? '#090d0b' : '#f3f6f0';
+    try { localStorage.setItem('nexlife_theme', currentTheme); }
+    catch (error) { console.info('NEXLIFE could not save the theme preference:', error); }
+  }
+
   function setFilter(filter) {
     activeFilter = filter;
     $$('.filter-button').forEach((button) => { const selected = button.dataset.filter === filter; button.classList.toggle('active', selected); button.setAttribute('aria-pressed', String(selected)); });
@@ -638,7 +655,7 @@
     const backup = {
       app: 'NEXLIFE', version: 2, exportedAt: new Date().toISOString(), playerName, quests, totalXP, todayXP, streak, lastActive,
       currentDay: getToday(), bossCompleted, dailyHistory, achievementClaims: [...achievementClaims], weeklyChallenge,
-      focusMinutes, breakMinutes, reminderTime
+      focusMinutes, breakMinutes, reminderTime, theme: currentTheme
     };
     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob); const link = document.createElement('a');
@@ -666,6 +683,7 @@
       focusMinutes = [25, 45, 60].includes(Number(backup.focusMinutes)) ? Number(backup.focusMinutes) : 25;
       breakMinutes = [5, 10, 15].includes(Number(backup.breakMinutes)) ? Number(backup.breakMinutes) : 5;
       reminderTime = ['off', '09:00', '12:00', '17:00', '20:00'].includes(backup.reminderTime) ? backup.reminderTime : 'off';
+      if (backup.theme === 'light' || backup.theme === 'dark') applyTheme(backup.theme);
       $('#focusDuration').value = String(focusMinutes); $('#breakDuration').value = String(breakMinutes); $('#reminderTime').value = reminderTime;
       timerMode = 'focus'; timerRemaining = focusMinutes * 60; persistState(); renderQuests(); updatePlayer(); updateDailyProgress(); renderWeek(); renderWeeklyChallenge();
       renderAchievements(); renderHistory(); updateReminderStatus(); closeModal(els.profileModal); showToast('Backup restored. Your progress is back.'); checkAchievements();
@@ -781,6 +799,7 @@
     $('#profileForm').addEventListener('submit', saveProfile);
     $('#exportData').addEventListener('click', exportBackup); $('#profileExport').addEventListener('click', exportBackup); $('#importData').addEventListener('change', importBackup);
     $('#openTemplates').addEventListener('click', () => openModal(els.templateModal));
+    $('#themeToggle').addEventListener('click', () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark'));
     $('#closeTemplates').addEventListener('click', () => closeModal(els.templateModal));
     $('#closeQuest').addEventListener('click', () => closeModal(els.questModal)); $('#closeProfile').addEventListener('click', () => closeModal(els.profileModal));
     $$('.modal').forEach((modal) => modal.addEventListener('click', (event) => { if (event.target === modal || event.target.classList.contains('modal-backdrop')) closeModal(modal); }));
@@ -804,6 +823,7 @@
   }
 
   function init() {
+    applyTheme(currentTheme);
     checkNewDay(); verifyStreak(); updateDate(); updatePlayer(); renderQuests(); updateDailyProgress(); updateBoss(); renderWeek(); renderWeeklyChallenge(); renderAchievements(); renderHistory(); renderTemplates(); updateTimerDisplay(); bindEvents(); updateReminderStatus();
     reminderInterval = window.setInterval(checkReminder, 20000);
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js').catch((error) => console.info('Offline cache is not available:', error));
