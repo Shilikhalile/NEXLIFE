@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexlife-shell-v1';
+const CACHE_NAME = 'nexlife-shell-v2';
 const APP_FILES = ['', 'index.html', 'style.css', 'script.js', 'manifest.webmanifest', 'icon.svg'];
 const APP_BASE = new URL('./', self.location.href);
 
@@ -38,4 +38,18 @@ self.addEventListener('fetch', (event) => {
       return Response.error();
     })
   );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil((async () => {
+    const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const client of windows) {
+      if ('focus' in client) {
+        if ('navigate' in client) await client.navigate(APP_BASE.href);
+        return client.focus();
+      }
+    }
+    return self.clients.openWindow(APP_BASE.href);
+  })());
 });

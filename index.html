@@ -20,13 +20,11 @@
         <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
         <span class="brand-copy"><strong>NEXLIFE</strong><small>REAL LIFE RPG</small></span>
       </a>
-
       <div class="player-mini">
         <div class="avatar" aria-hidden="true">✦</div>
         <div class="player-mini-info"><strong id="sidePlayerName">PLAYER</strong><span>Level <b id="sideLevel">1</b></span></div>
         <button class="icon-button profile-edit" id="editProfile" aria-label="Edit player profile" title="Edit profile">↗</button>
       </div>
-
       <p class="nav-caption">YOUR SPACE</p>
       <nav class="main-nav" aria-label="Main navigation">
         <button class="nav-item active" data-page="dashboard" aria-current="page" aria-label="Overview" title="Overview"><span class="nav-icon">⌂</span><span>Overview</span></button>
@@ -35,8 +33,9 @@
         <button class="nav-item" data-page="fitness" aria-label="Fitness" title="Fitness"><span class="nav-icon">✳</span><span>Fitness</span></button>
         <button class="nav-item" data-page="projects" aria-label="Projects" title="Projects"><span class="nav-icon">⌘</span><span>Projects</span></button>
         <button class="nav-item" data-page="growth" aria-label="Self growth" title="Self growth"><span class="nav-icon">◎</span><span>Self growth</span></button>
+        <button class="nav-item" data-page="history" aria-label="History" title="History"><span class="nav-icon">▤</span><span>History</span></button>
+        <button class="nav-item" data-page="achievements" aria-label="Achievements" title="Achievements"><span class="nav-icon">✧</span><span>Achievements</span></button>
       </nav>
-
       <div class="sidebar-bottom">
         <div class="side-stat"><span>Current streak</span><strong><span id="sideStreak">0</span><i> days</i></strong></div>
         <div class="side-stat"><span>Lifetime XP</span><strong id="sideXP">0</strong></div>
@@ -53,7 +52,7 @@
         </div>
         <div class="topbar-actions">
           <div class="date-chip"><span class="date-sparkle">✳</span><span id="dateBox"></span></div>
-          <button class="button button-quiet" id="exportData" type="button" title="Download a backup of your progress"><span aria-hidden="true">↓</span> <span class="export-label">Backup</span></button>
+          <button class="button button-quiet" id="exportData" type="button" title="Download a backup of your progress"><span aria-hidden="true">↓</span> <span>Backup</span></button>
         </div>
       </header>
 
@@ -83,28 +82,15 @@
         <div class="dashboard-grid">
           <div class="dashboard-main-column">
             <section class="progress-panel panel">
-              <div class="section-heading compact-heading">
-                <div><p class="section-kicker">THE DAILY EDITION</p><h2>Today's progress</h2></div>
-                <div class="progress-score"><strong id="progressPercent">0%</strong><span id="dailyProgressText">0 of 5 quests</span></div>
-              </div>
+              <div class="section-heading compact-heading"><div><p class="section-kicker">THE DAILY EDITION</p><h2>Today's progress</h2></div><div class="progress-score"><strong id="progressPercent">0%</strong><span id="dailyProgressText">0 of 5 quests</span></div></div>
               <div class="daily-track" role="progressbar" aria-label="Today's quest completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="daily-progress-fill" id="dailyProgressFill"></div></div>
               <div class="progress-foot"><span>One intentional step at a time.</span><span id="progressRemaining">5 left to go</span></div>
             </section>
-
             <section class="quests-section" aria-labelledby="questsHeading">
-              <div class="section-heading quests-heading">
-                <div><p class="section-kicker">MAKE IT HAPPEN</p><h2 id="questsHeading">Today's quests <span class="count-pill" id="questCount">0</span></h2></div>
-                <button class="button button-primary" id="openQuest" type="button"><span aria-hidden="true">＋</span> New quest</button>
-              </div>
-              <div class="quest-toolbar" role="group" aria-label="Filter quests">
-                <button class="filter-button active" data-filter="all" aria-pressed="true">All</button>
-                <button class="filter-button" data-filter="active" aria-pressed="false">In progress</button>
-                <button class="filter-button" data-filter="completed" aria-pressed="false">Completed</button>
-                <span class="quest-toolbar-spacer"></span><span class="quest-hint">Small wins add up.</span>
-              </div>
+              <div class="section-heading quests-heading"><div><p class="section-kicker">MAKE IT HAPPEN</p><h2 id="questsHeading">Today's quests <span class="count-pill" id="questCount">0</span></h2></div><div class="quest-add-actions"><button class="button button-quiet" id="openTemplates" type="button">▦ Templates</button><button class="button button-primary" id="openQuest" type="button"><span aria-hidden="true">＋</span> New quest</button></div></div>
+              <div class="quest-toolbar" role="group" aria-label="Filter quests"><button class="filter-button active" data-filter="all" aria-pressed="true">All</button><button class="filter-button" data-filter="active" aria-pressed="false">In progress</button><button class="filter-button" data-filter="completed" aria-pressed="false">Completed</button><span class="quest-toolbar-spacer"></span><span class="quest-hint">Small wins add up.</span></div>
               <div class="quest-list" id="questList" aria-live="polite"></div>
             </section>
-
             <section class="domains-section" aria-labelledby="domainsHeading">
               <div class="section-heading"><div><p class="section-kicker">YOUR PERSONAL CAMPAIGN</p><h2 id="domainsHeading">Choose your focus</h2></div><span class="section-aside">Five paths. One you.</span></div>
               <div class="domain-grid">
@@ -119,28 +105,16 @@
 
           <aside class="dashboard-side-column" aria-label="Daily tools">
             <section class="focus-card panel" aria-labelledby="focusHeading">
-              <div class="focus-card-top"><span class="focus-icon">◷</span><span class="focus-badge">FOCUS MODE</span><button class="help-tip" type="button" aria-label="A completed focus session awards 25 XP" title="Finish a 25-minute session to earn 25 XP">?</button></div>
-              <p class="section-kicker">MAKE SPACE FOR WHAT MATTERS</p>
-              <h2 id="focusHeading">Focus session</h2>
-              <p class="focus-description">One thing. No distractions. Just you and the work.</p>
+              <div class="focus-card-top"><span class="focus-icon">◷</span><span class="focus-badge">FOCUS MODE</span><button class="help-tip" type="button" aria-label="A completed focus session awards 25 XP" title="Finish a focus session to earn 25 XP">?</button></div>
+              <p class="section-kicker">MAKE SPACE FOR WHAT MATTERS</p><h2 id="focusHeading">Focus session</h2><p class="focus-description">One thing. No distractions. Just you and the work.</p>
               <div class="timer-wrap"><svg class="timer-ring" viewBox="0 0 180 180" aria-hidden="true"><circle class="timer-track" cx="90" cy="90" r="78"></circle><circle class="timer-progress" id="timerProgress" cx="90" cy="90" r="78"></circle></svg><div class="timer-readout"><strong id="timerDisplay">25:00</strong><span id="timerStatus">READY WHEN YOU ARE</span></div></div>
+              <div class="timer-settings"><label>FOCUS<select id="focusDuration" aria-label="Focus session length"><option value="25">25 min</option><option value="45">45 min</option><option value="60">60 min</option></select></label><label>BREAK<select id="breakDuration" aria-label="Break length"><option value="5">5 min</option><option value="10">10 min</option><option value="15">15 min</option></select></label></div>
               <div class="timer-controls"><button class="button button-primary timer-start" id="timerToggle" type="button">Start focus</button><button class="button button-quiet timer-reset" id="timerReset" type="button" aria-label="Reset focus timer" title="Reset timer">↺</button></div>
-              <p class="timer-reward"><span>✦</span> +25 XP when you finish</p>
+              <p class="timer-reward"><span>✦</span> +25 XP after each focus session</p>
             </section>
-
-            <section class="boss-card panel" aria-labelledby="bossHeading">
-              <div class="boss-topline"><span class="boss-mark">✧</span><span class="boss-label">THE FINAL CHECK</span></div>
-              <h2 id="bossHeading">Daily boss</h2>
-              <p id="bossStatus">Complete all of today's quests to unlock your bonus.</p>
-              <div class="boss-progress-line"><span id="bossQuestCount">0 / 0 complete</span><span class="boss-reward">+100 XP</span></div>
-              <button id="completeBoss" class="boss-button" type="button" disabled>Finish today's quests first <span>→</span></button>
-            </section>
-
-            <section class="week-card panel" aria-labelledby="weekHeading">
-              <div class="week-card-heading"><div><p class="section-kicker">CONSISTENCY OVER INTENSITY</p><h2 id="weekHeading">This week</h2></div><span class="week-total" id="weekTotal">0 XP</span></div>
-              <div class="week-bars" id="weekActivity" aria-label="Experience earned in the last seven days"></div>
-              <div class="week-legend"><span><i></i> Daily XP</span><span id="weekDaysActive">0 active days</span></div>
-            </section>
+            <section class="boss-card panel" aria-labelledby="bossHeading"><div class="boss-topline"><span class="boss-mark">✧</span><span class="boss-label">THE FINAL CHECK</span></div><h2 id="bossHeading">Daily boss</h2><p id="bossStatus">Complete all of today's quests to unlock your bonus.</p><div class="boss-progress-line"><span id="bossQuestCount">0 / 0 complete</span><span class="boss-reward">+100 XP</span></div><button id="completeBoss" class="boss-button" type="button" disabled>Finish today's quests first <span>→</span></button></section>
+            <section class="week-card panel" aria-labelledby="weekHeading"><div class="week-card-heading"><div><p class="section-kicker">CONSISTENCY OVER INTENSITY</p><h2 id="weekHeading">This week</h2></div><span class="week-total" id="weekTotal">0 XP</span></div><div class="week-bars" id="weekActivity" aria-label="Experience earned in the last seven days"></div><div class="week-legend"><span><i></i> Daily XP</span><span id="weekDaysActive">0 active days</span></div></section>
+            <section class="challenge-card panel" aria-labelledby="challengeTitle"><div class="challenge-heading"><span class="challenge-icon">⚑</span><span class="section-kicker">WEEKLY CHALLENGE</span><span class="challenge-reward" id="challengeReward">+120 XP</span></div><h2 id="challengeTitle">Loading your challenge…</h2><p id="challengeDescription"></p><div class="challenge-progress-track" role="progressbar" aria-label="Weekly challenge progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="challengeProgressFill"></div></div><div class="challenge-foot"><span id="challengeCount">0 / 0</span><span id="challengeStatus">Resets Monday</span></div></section>
           </aside>
         </div>
       </section>
@@ -166,6 +140,19 @@
         <div class="domain-tip-grid"><article class="tip-card"><span>01 / REFLECT</span><h3>Ask a better question</h3><p>What gave you energy today? What would you like to do a little differently tomorrow?</p></article><article class="tip-card"><span>02 / READ</span><h3>Stay open to new ideas</h3><p>A few considered pages can offer a fresh perspective or a useful new question.</p></article><article class="tip-card"><span>03 / RESET</span><h3>Plan a kinder tomorrow</h3><p>Choose one meaningful priority and let the rest of the day breathe.</p></article></div>
       </section>
 
+      <section class="page records-page" id="history" aria-labelledby="historyHeading" hidden>
+        <div class="records-intro"><p class="section-kicker">LOOK HOW FAR YOU'VE COME</p><h2 id="historyHeading">Your history</h2><p>A private record of the small promises you kept. Stored on this device.</p></div>
+        <div class="history-stats"><article class="panel"><span>MISSIONS COMPLETE</span><strong id="historyQuestTotal">0</strong></article><article class="panel"><span>FOCUS SESSIONS</span><strong id="historyFocusTotal">0</strong></article><article class="panel"><span>EXPERIENCE EARNED</span><strong id="historyXPTotal">0 XP</strong></article></div>
+        <div class="history-heading"><div><p class="section-kicker">RECENT DAYS</p><h3>Activity journal</h3></div><span class="section-aside">Last 30 days</span></div>
+        <div class="history-list" id="historyList" aria-live="polite"></div>
+      </section>
+
+      <section class="page records-page" id="achievements" aria-labelledby="achievementsHeading" hidden>
+        <div class="records-intro"><p class="section-kicker">YOUR EFFORT, MADE VISIBLE</p><h2 id="achievementsHeading">Achievements</h2><p>Earn badges for showing up. Every milestone also grants bonus XP.</p></div>
+        <div class="achievement-summary panel"><span class="achievement-summary-icon">✧</span><div><strong id="achievementCount">0 / 8 earned</strong><span>Each badge is a reminder of something you did.</span></div><span class="achievement-summary-reward" id="achievementXP">0 bonus XP earned</span></div>
+        <div class="achievement-grid" id="achievementGrid" aria-live="polite"></div>
+      </section>
+
       <footer class="app-footer"><span>© NEXLIFE · YOUR LIFE, IN PROGRESS</span><span>Private by design <i>✦</i> No account. No cloud. Just you.</span></footer>
     </main>
   </div>
@@ -174,29 +161,36 @@
     <div class="modal-backdrop"></div>
     <section class="modal-box" role="dialog" aria-modal="true" aria-labelledby="questModalTitle">
       <button class="close-modal" id="closeQuest" type="button" aria-label="Close dialog">×</button>
-      <span class="section-kicker">MAKE A PROMISE TO YOURSELF</span><h2 id="questModalTitle">Create a quest</h2><p>Give your next small win a name. You can always change direction.</p>
+      <span class="section-kicker">MAKE A PROMISE TO YOURSELF</span><h2 id="questModalTitle">Create a quest</h2><p id="questModalDescription">Give your next small win a name. You can always change direction.</p>
       <form id="questForm">
         <label>Quest name<input id="questName" name="name" type="text" maxlength="72" placeholder="e.g. Read a chapter of economics" required></label>
         <div class="form-row"><label>Choose a path<select id="questDomain" name="domain"><option value="study">◈ Study</option><option value="trading">⌁ Trading</option><option value="fitness">✳ Fitness</option><option value="projects">⌘ Projects</option><option value="growth">◎ Self growth</option></select></label><label>XP reward<input id="questReward" name="reward" type="number" min="5" max="500" value="50" required></label></div>
         <label>What does done look like? <span class="optional-label">OPTIONAL</span><textarea id="questDescription" name="description" maxlength="180" placeholder="A few words to make the goal clear..."></textarea></label>
-        <button class="button button-primary create-button" type="submit">Add to today's quests <span>→</span></button>
+        <label>Repeat<select id="questRecurrence" name="recurrence"><option value="once">Just today</option><option value="daily">Every day</option><option value="weekly">Weekly on selected days</option></select></label>
+        <fieldset class="weekly-days" id="weeklyDays" hidden><legend>Choose the days</legend><div class="weekday-options"><label><input type="checkbox" name="weekday" value="1"> Mon</label><label><input type="checkbox" name="weekday" value="2"> Tue</label><label><input type="checkbox" name="weekday" value="3"> Wed</label><label><input type="checkbox" name="weekday" value="4"> Thu</label><label><input type="checkbox" name="weekday" value="5"> Fri</label><label><input type="checkbox" name="weekday" value="6"> Sat</label><label><input type="checkbox" name="weekday" value="0"> Sun</label></div></fieldset>
+        <button class="button button-primary create-button" id="saveQuestButton" type="submit">Add to today's quests <span>→</span></button>
       </form>
+    </section>
+  </div>
+
+  <div class="modal" id="templateModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <section class="modal-box template-modal-box" role="dialog" aria-modal="true" aria-labelledby="templateHeading">
+      <button class="close-modal" id="closeTemplates" type="button" aria-label="Close dialog">×</button><span class="section-kicker">A GOOD PLACE TO START</span><h2 id="templateHeading">Quest templates</h2><p>Choose a small, ready-made goal. Edit anything before adding it.</p><div class="template-grid" id="templateGrid"></div>
     </section>
   </div>
 
   <div class="modal" id="profileModal" aria-hidden="true">
     <div class="modal-backdrop"></div>
     <section class="modal-box profile-modal-box" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
-      <button class="close-modal" id="closeProfile" type="button" aria-label="Close dialog">×</button>
-      <span class="section-kicker">MAKE THIS YOURS</span><h2 id="profileModalTitle">Your player profile</h2><p>Your profile and progress are stored only in this browser.</p>
+      <button class="close-modal" id="closeProfile" type="button" aria-label="Close dialog">×</button><span class="section-kicker">MAKE THIS YOURS</span><h2 id="profileModalTitle">Your player profile</h2><p>Your profile and progress are stored only in this browser.</p>
       <form id="profileForm"><label>Player name<input id="playerNameInput" name="playerName" type="text" maxlength="24" placeholder="PLAYER" autocomplete="nickname"></label><button class="button button-primary create-button" type="submit">Save profile <span>→</span></button></form>
-      <div class="backup-divider"><span>YOUR DATA</span></div>
-      <p class="backup-copy">Take your progress with you, or restore a previous NEXLIFE backup.</p>
-      <div class="backup-actions"><button class="button button-quiet" id="profileExport" type="button">↓ Export backup</button><label class="button button-quiet import-label" for="importData">↑ Restore backup<input id="importData" type="file" accept="application/json,.json"></label></div>
+      <div class="settings-divider"><span>REMINDERS</span></div><label class="setting-label" for="reminderTime">Daily reminder time<select id="reminderTime"><option value="off">Off</option><option value="09:00">9:00 AM</option><option value="12:00">12:00 PM</option><option value="17:00">5:00 PM</option><option value="20:00">8:00 PM</option></select></label><div class="reminder-actions"><button class="button button-quiet" id="enableReminders" type="button">Enable notifications</button><span id="reminderStatus">Reminders only run while NEXLIFE is open.</span></div>
+      <div class="backup-divider"><span>YOUR DATA</span></div><p class="backup-copy">Take your progress with you, or restore a previous NEXLIFE backup.</p><div class="backup-actions"><button class="button button-quiet" id="profileExport" type="button">↓ Export backup</button><label class="button button-quiet import-label" for="importData">↑ Restore backup<input id="importData" type="file" accept="application/json,.json"></label></div>
     </section>
   </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMessage"></span><button id="toastAction" type="button" hidden>Undo</button></div>
   <div class="xp-popup" id="xpPopup" aria-live="polite"></div>
   <div class="level-up" id="levelUp" aria-hidden="true"><div class="level-up-box" role="dialog" aria-modal="true" aria-labelledby="levelUpTitle"><div class="level-up-icon">✦</div><span>YOU DID THAT</span><h2 id="levelUpTitle">LEVEL <b id="newLevel">2</b></h2><p>Keep showing up. Look how far you've come.</p><button id="closeLevelUp" type="button">Keep going <span>→</span></button></div></div>
 

@@ -54,10 +54,18 @@ def main() -> None:
     if missing:
         fail(f"missing local assets: {', '.join(missing)}")
 
-    required_pages = {"dashboard", "study", "trading", "fitness", "projects", "growth"}
+    required_pages = {"dashboard", "study", "trading", "fitness", "projects", "growth", "history", "achievements"}
     missing_pages = sorted(required_pages - parser.page_sections)
     if missing_pages:
         fail(f"missing dashboard pages: {', '.join(missing_pages)}")
+
+    required_ids = {
+        "openTemplates", "templateGrid", "questRecurrence", "weeklyDays", "questForm", "historyList",
+        "achievementGrid", "challengeProgressFill", "focusDuration", "breakDuration", "reminderTime", "enableReminders",
+    }
+    missing_ids = sorted(required_ids - set(parser.ids))
+    if missing_ids:
+        fail(f"required feature controls are missing: {', '.join(missing_ids)}")
 
     manifest_path = ROOT / "manifest.webmanifest"
     try:
@@ -71,14 +79,28 @@ def main() -> None:
             fail(f"manifest icon is missing: {icon.get('src')}")
 
     js = (ROOT / "script.js").read_text(encoding="utf-8")
-    for required in ("function completeQuest", "function completeBoss", "function renderWeek", "function exportBackup", "function importBackup"):
+    required_functions = (
+        "function completeQuest", "function completeBoss", "function renderWeek", "function exportBackup",
+        "function importBackup", "function submitQuest", "function restoreDeletedQuest", "function renderTemplates",
+        "function renderHistory", "function renderAchievements", "function checkWeeklyChallenge", "function checkReminder",
+    )
+    for required in required_functions:
         if required not in js:
             fail(f"expected application feature is missing: {required}")
+    if "[1, 2].includes(backup.version)" not in js:
+        fail("version 1 and version 2 backup compatibility is missing")
+
     css = (ROOT / "style.css").read_text(encoding="utf-8")
     if "@media (max-width: 650px)" not in css or "prefers-reduced-motion" not in css:
         fail("responsive layout or reduced-motion styles are missing")
+    if ".toast.show { pointer-events: auto; }" not in css:
+        fail("the undo action must be keyboard and pointer reachable")
 
-    print(f"PASS: {len(parser.ids)} unique HTML ids; {len(parser.local_assets)} local references; {len(parser.page_sections)} dashboard pages; manifest and core features verified.")
+    worker = (ROOT / "service-worker.js").read_text(encoding="utf-8")
+    if not re.search(r"nexlife-shell-v\d+", worker) or "notificationclick" not in worker:
+        fail("service-worker cache version or notification click handling is missing")
+
+    print(f"PASS: {len(parser.ids)} unique HTML ids; {len(parser.local_assets)} local references; {len(parser.page_sections)} dashboard pages; new features, manifest and offline worker verified.")
 
 
 if __name__ == "__main__":
