@@ -9,7 +9,8 @@
 - **Quest templates:** start from 10 editable ideas for study, fitness, projects, personal growth and trading education.
 - **Progression and rewards:** earn XP, level up, build a streak, collect one-time bonus-XP achievement badges, and claim a daily-boss bonus after finishing today's scheduled quests.
 - **Weekly challenge:** a rotating goal tracks quests, XP, focus sessions or active days and grants bonus XP when completed. Progress resets each Monday.
-- **Activity journal:** review recent completed quests, focus sessions and XP, with a 30-day activity timeline and lifetime totals.
+- **Private daily journal:** save a mood and a short reflection for today; past notes appear in the activity timeline and travel with your JSON backup.
+- **Momentum insights:** see a 30-day activity heatmap and a weekly recap of quests, focus minutes, XP, active days and your most-used path.
 - **Custom focus and breaks:** choose 25, 45 or 60-minute focus sessions and 5, 10 or 15-minute breaks. A completed focus session awards 25 XP.
 - **Optional reminders:** opt into browser notifications and choose a daily reminder time. The app must be open in a browser for reminders to run; this is not a background or server-side alarm.
 - **Backup and restore:** export a portable JSON save and restore it on another browser. Version 1 backups remain supported.

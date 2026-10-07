@@ -458,6 +458,97 @@
     }
   }
 
+  function getActivityScore(record = {}) {
+    const journal = typeof record.journal === 'string' && record.journal.trim();
+    return Math.max(0, Number(record.xp) || 0)
+      + Math.max(0, Number(record.quests) || 0) * 25
+      + Math.max(0, Number(record.focus) || 0) * 2
+      + (journal || record.journalMood ? 20 : 0);
+  }
+
+  function renderActivityHeatmap(dayKeys) {
+    const grid = $('#activityHeatmap');
+    grid.replaceChildren();
+    const scores = dayKeys.map((dayKey) => getActivityScore(dailyHistory[dayKey] || {}));
+    const maxScore = Math.max(1, ...scores);
+    dayKeys.forEach((dayKey, index) => {
+      const record = dailyHistory[dayKey] || {};
+      const score = scores[index];
+      const level = score ? Math.max(1, Math.ceil((score / maxScore) * 4)) : 0;
+      const date = new Date(`${dayKey}T12:00:00`);
+      const dateLabel = date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+      const questsDone = Math.max(0, Number(record.quests) || 0);
+      const focusMinutesDone = Math.max(0, Number(record.focus) || 0);
+      const xpEarned = Math.max(0, Number(record.xp) || 0);
+      const cell = document.createElement('span');
+      cell.className = 'activity-cell';
+      cell.dataset.level = String(level);
+      cell.setAttribute('role', 'listitem');
+      cell.setAttribute('aria-label', `${dateLabel}: ${xpEarned} XP, ${questsDone} quests, ${focusMinutesDone} focus minutes${record.journal || record.journalMood ? ', reflection saved' : ''}`);
+      cell.title = `${dateLabel} · ${xpEarned} XP · ${questsDone} quests · ${focusMinutesDone} focus min`;
+      grid.append(cell);
+    });
+  }
+
+  function renderWeeklyRecap() {
+    const start = new Date(`${getWeekStart()}T12:00:00`);
+    const weekKeys = Array.from({ length: 7 }, (_, index) => getToday(offsetDate(index, start))).filter((dayKey) => dayKey <= getToday());
+    const records = weekKeys.map((dayKey) => dailyHistory[dayKey] || {});
+    const questsDone = records.reduce((sum, record) => sum + Math.max(0, Number(record.quests) || 0), 0);
+    const focusMinutesDone = records.reduce((sum, record) => sum + Math.max(0, Number(record.focus) || 0), 0);
+    const xpEarned = records.reduce((sum, record) => sum + Math.max(0, Number(record.xp) || 0), 0);
+    const activeDays = records.filter((record) => getActivityScore(record) > 0).length;
+    const domainTotals = {};
+    records.forEach((record) => (Array.isArray(record.completedItems) ? record.completedItems : []).forEach((item) => {
+      if (item && QUEST_DOMAINS.includes(item.domain)) domainTotals[item.domain] = (domainTotals[item.domain] || 0) + 1;
+    }));
+    const leadingCount = Math.max(0, ...Object.values(domainTotals));
+    const leadingDomains = Object.entries(domainTotals).filter(([, count]) => count === leadingCount).map(([domain]) => DOMAIN_NAMES[domain]);
+    $('#weeklyQuests').textContent = formatNumber(questsDone);
+    $('#weeklyFocus').textContent = formatNumber(focusMinutesDone);
+    $('#weeklyXP').textContent = formatNumber(xpEarned);
+    $('#weeklyActiveDays').textContent = `${activeDays} / 7`;
+    $('#weeklyInsight').textContent = activeDays
+      ? `${activeDays} ${activeDays === 1 ? 'day' : 'days'} of showing up this week.${leadingDomains.length ? ` Your most active ${leadingDomains.length === 1 ? 'path' : 'paths'}: ${leadingDomains.join(', ')}.` : ' Add a quest to reveal your strongest path.'}`
+      : 'Your weekly story starts with one small win. Pick a tiny step and begin.';
+  }
+
+  function updateJournalCount() {
+    $('#journalCount').textContent = `${$('#journalEntry').value.length} / 500`;
+  }
+
+  function renderDailyJournal() {
+    const record = dailyHistory[getToday()] || {};
+    const moods = ['great', 'good', 'okay', 'challenging'];
+    $('#journalEntry').value = typeof record.journal === 'string' ? record.journal.slice(0, 500) : '';
+    $('#journalMood').value = moods.includes(record.journalMood) ? record.journalMood : '';
+    updateJournalCount();
+    const savedAt = typeof record.journalUpdatedAt === 'string' ? new Date(record.journalUpdatedAt) : null;
+    $('#journalSaved').textContent = savedAt && Number.isFinite(savedAt.getTime())
+      ? `Saved at ${savedAt.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`
+      : 'Not saved yet';
+  }
+
+  function saveDailyJournal(event) {
+    event.preventDefault();
+    const entry = $('#journalEntry').value.trim().slice(0, 500);
+    const moodValue = $('#journalMood').value;
+    const mood = ['great', 'good', 'okay', 'challenging'].includes(moodValue) ? moodValue : '';
+    const record = ensureDayRecord();
+    if (!entry && !mood) {
+      delete record.journal;
+      delete record.journalMood;
+      delete record.journalUpdatedAt;
+    } else {
+      record.journal = entry;
+      record.journalMood = mood;
+      record.journalUpdatedAt = new Date().toISOString();
+    }
+    persistState();
+    renderHistory();
+    showToast(entry || mood ? 'Reflection saved on this device.' : 'Today’s reflection was cleared.');
+  }
+
   function renderHistory() {
     const dayKeys = Object.keys(dailyHistory).sort().reverse();
     const totalQuests = dayKeys.reduce((sum, day) => sum + (Number(dailyHistory[day]?.quests) || 0), 0);
@@ -465,15 +556,18 @@
     $('#historyQuestTotal').textContent = formatNumber(totalQuests);
     $('#historyFocusTotal').textContent = formatNumber(totalFocus);
     $('#historyXPTotal').textContent = `${formatNumber(totalXP)} XP`;
+    renderDailyJournal();
+    renderWeeklyRecap();
     const list = $('#historyList'); list.replaceChildren();
     const recentDayKeys = Array.from({ length: 30 }, (_, offset) => getToday(offsetDate(-offset)));
+    renderActivityHeatmap(recentDayKeys.slice().reverse());
     const activeDays = recentDayKeys.filter((day) => {
       const record = dailyHistory[day] || {};
-      return (Number(record.xp) || 0) > 0 || (Number(record.quests) || 0) > 0 || (Number(record.focus) || 0) > 0;
+      return getActivityScore(record) > 0;
     });
     if (!activeDays.length) {
       const empty = document.createElement('div'); empty.className = 'empty';
-      empty.innerHTML = '<strong>Your story starts with one small win.</strong>Completed quests and focus sessions will appear here.';
+      empty.innerHTML = '<strong>Your story starts with one small win.</strong>Completed quests, focus sessions, and reflections will appear here.';
       list.append(empty); return;
     }
     for (const dayKey of activeDays) {
@@ -497,6 +591,13 @@
         const items = document.createElement('ul'); items.className = 'history-quests';
         for (const item of doneNames.slice(0, 6)) { const li = document.createElement('li'); li.textContent = item.name || 'Completed quest'; items.append(li); }
         card.append(items);
+      }
+      if ((typeof record.journal === 'string' && record.journal.trim()) || record.journalMood) {
+        const reflection = document.createElement('p'); reflection.className = 'history-reflection';
+        const moodNames = { great: 'Great', good: 'Good', okay: 'In-between', challenging: 'Challenging' };
+        const mood = moodNames[record.journalMood];
+        reflection.textContent = `${mood ? `${mood} · ` : ''}${String(record.journal || '').slice(0, 500)}`;
+        card.append(reflection);
       }
       list.append(card);
     }
@@ -807,6 +908,8 @@
     $$('.filter-button').forEach((button) => button.addEventListener('click', () => setFilter(button.dataset.filter)));
     els.timerToggle.addEventListener('click', toggleTimer); els.timerReset.addEventListener('click', resetTimer);
     $('#focusDuration').value = String(focusMinutes); $('#breakDuration').value = String(breakMinutes);
+    $('#dailyJournalForm').addEventListener('submit', saveDailyJournal);
+    $('#journalEntry').addEventListener('input', updateJournalCount);
     $('#focusDuration').addEventListener('change', () => { focusMinutes = Number($('#focusDuration').value); persistState(); resetTimer(); });
     $('#breakDuration').addEventListener('change', () => { breakMinutes = Number($('#breakDuration').value); if (timerMode === 'break') { timerRemaining = breakMinutes * 60; } persistState(); updateTimerDisplay(); });
     $('#reminderTime').value = reminderTime; $('#reminderTime').addEventListener('change', (event) => setReminderTime(event.target.value));

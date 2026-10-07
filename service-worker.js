@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nexlife-shell-v3';
+const CACHE_NAME = 'nexlife-shell-v4';
 const APP_FILES = ['', 'index.html', 'style.css', 'script.js', 'theme-init.js', 'manifest.webmanifest', 'icon.svg'];
 const APP_BASE = new URL('./', self.location.href);
 

@@ -62,6 +62,8 @@ def main() -> None:
     required_ids = {
         "openTemplates", "templateGrid", "questRecurrence", "weeklyDays", "questForm", "historyList",
         "achievementGrid", "challengeProgressFill", "focusDuration", "breakDuration", "reminderTime", "enableReminders", "themeToggle",
+        "activityHeatmap", "weeklyRecapHeading", "weeklyQuests", "weeklyFocus", "weeklyXP", "weeklyActiveDays",
+        "dailyJournalForm", "journalMood", "journalEntry", "journalCount", "journalSaved",
     }
     missing_ids = sorted(required_ids - set(parser.ids))
     if missing_ids:
@@ -83,6 +85,7 @@ def main() -> None:
         "function completeQuest", "function completeBoss", "function renderWeek", "function exportBackup",
         "function importBackup", "function submitQuest", "function restoreDeletedQuest", "function renderTemplates",
         "function renderHistory", "function renderAchievements", "function checkWeeklyChallenge", "function checkReminder",
+        "function getActivityScore", "function renderActivityHeatmap", "function renderWeeklyRecap", "function saveDailyJournal",
     )
     for required in required_functions:
         if required not in js:
@@ -105,7 +108,7 @@ def main() -> None:
     if not re.search(r"nexlife-shell-v\d+", worker) or "notificationclick" not in worker:
         fail("service-worker cache version or notification click handling is missing")
 
-    print(f"PASS: {len(parser.ids)} unique HTML ids; {len(parser.local_assets)} local references; {len(parser.page_sections)} dashboard pages; new features, manifest and offline worker verified.")
+    print(f"PASS: {len(parser.ids)} unique HTML ids; {len(parser.local_assets)} local references; {len(parser.page_sections)} dashboard pages; journal, insights, manifest and offline worker verified.")
 
 
 if __name__ == "__main__":
