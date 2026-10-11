@@ -64,6 +64,7 @@ def main() -> None:
         "achievementGrid", "challengeProgressFill", "focusDuration", "breakDuration", "reminderTime", "enableReminders", "themeToggle",
         "activityHeatmap", "weeklyRecapHeading", "weeklyQuests", "weeklyFocus", "weeklyXP", "weeklyActiveDays",
         "dailyJournalForm", "journalMood", "journalEntry", "journalCount", "journalSaved",
+        "questEstimate", "plannerBudget", "plannerSummary", "plannerReward", "plannerTimeTrack", "plannerProgress", "plannerList", "plannerHint",
     }
     missing_ids = sorted(required_ids - set(parser.ids))
     if missing_ids:
@@ -86,6 +87,7 @@ def main() -> None:
         "function importBackup", "function submitQuest", "function restoreDeletedQuest", "function renderTemplates",
         "function renderHistory", "function renderAchievements", "function checkWeeklyChallenge", "function checkReminder",
         "function getActivityScore", "function renderActivityHeatmap", "function renderWeeklyRecap", "function saveDailyJournal",
+        "function createQuestPlan", "function renderFocusPlan",
     )
     for required in required_functions:
         if required not in js:
@@ -94,6 +96,8 @@ def main() -> None:
         fail("version 1 and version 2 backup compatibility is missing")
     if "function applyTheme" not in js or "nexlife_theme" not in js or "theme: currentTheme" not in js:
         fail("persistent theme switching or backup support is missing")
+    if "nexlife_plan_minutes" not in js or "estimateMinutes" not in js:
+        fail("quest duration estimates or saved time-plan preferences are missing")
     theme_init = (ROOT / "theme-init.js").read_text(encoding="utf-8")
     if 'document.documentElement.dataset.theme = theme' not in theme_init:
         fail("early theme initialization is missing")

@@ -4,27 +4,29 @@
 
   const XP_PER_LEVEL = 500;
   const FOCUS_REWARD = 25;
+  const QUEST_ESTIMATE_OPTIONS = [5, 10, 15, 20, 25, 30, 45, 60, 90];
+  const PLAN_BUDGET_OPTIONS = [15, 30, 45, 60, 90, 120];
   const QUEST_DOMAINS = ['study', 'trading', 'fitness', 'projects', 'growth'];
   const DOMAIN_NAMES = { study: 'Study', trading: 'Trading', fitness: 'Fitness', projects: 'Projects', growth: 'Self growth' };
   const DOMAIN_ICONS = { study: '◈', trading: '⌁', fitness: '✳', projects: '⌘', growth: '◎' };
   const DEFAULT_QUESTS = [
-    { id: 'study-default', name: 'Study economics for 30 minutes', domain: 'study', reward: 80, description: 'Choose one idea and give it your full attention.', recurrence: 'daily', completed: false },
-    { id: 'trading-default', name: 'Review two market charts', domain: 'trading', reward: 50, description: 'Write down what you notice before making a prediction.', recurrence: 'daily', completed: false },
-    { id: 'fitness-default', name: 'Move your body', domain: 'fitness', reward: 100, description: 'A workout, a walk, or any movement that feels good.', recurrence: 'daily', completed: false },
-    { id: 'projects-default', name: 'Build something for 30 minutes', domain: 'projects', reward: 60, description: 'Take one small, visible step on a project.', recurrence: 'daily', completed: false },
-    { id: 'growth-default', name: 'Read 10 pages', domain: 'growth', reward: 30, description: 'Learn something that helps you see things differently.', recurrence: 'daily', completed: false }
+    { id: 'study-default', name: 'Study economics for 30 minutes', domain: 'study', reward: 80, estimateMinutes: 30, description: 'Choose one idea and give it your full attention.', recurrence: 'daily', completed: false },
+    { id: 'trading-default', name: 'Review two market charts', domain: 'trading', reward: 50, estimateMinutes: 15, description: 'Write down what you notice before making a prediction.', recurrence: 'daily', completed: false },
+    { id: 'fitness-default', name: 'Move your body', domain: 'fitness', reward: 100, estimateMinutes: 30, description: 'A workout, a walk, or any movement that feels good.', recurrence: 'daily', completed: false },
+    { id: 'projects-default', name: 'Build something for 30 minutes', domain: 'projects', reward: 60, estimateMinutes: 30, description: 'Take one small, visible step on a project.', recurrence: 'daily', completed: false },
+    { id: 'growth-default', name: 'Read 10 pages', domain: 'growth', reward: 30, estimateMinutes: 15, description: 'Learn something that helps you see things differently.', recurrence: 'daily', completed: false }
   ];
   const TEMPLATES = [
-    { id: 'study-focus', name: 'Focused study block', domain: 'study', reward: 60, description: 'Complete one focused 25-minute study session.', recurrence: 'daily' },
-    { id: 'study-recall', name: 'Recall yesterday’s lesson', domain: 'study', reward: 35, description: 'Write down what you remember before opening your notes.', recurrence: 'daily' },
-    { id: 'trading-journal', name: 'Write a market journal entry', domain: 'trading', reward: 40, description: 'Note the setup, the risk, and one lesson. This is a learning exercise, not financial advice.', recurrence: 'once' },
-    { id: 'fitness-walk', name: 'Take a 20-minute walk', domain: 'fitness', reward: 45, description: 'Get outside, move at a comfortable pace, and enjoy the reset.', recurrence: 'daily' },
-    { id: 'fitness-train', name: 'Complete a workout', domain: 'fitness', reward: 80, description: 'Finish a session that fits your current energy and ability.', recurrence: 'weekly' },
-    { id: 'project-build', name: 'Build one small feature', domain: 'projects', reward: 70, description: 'Turn one clear next step into something you can see or use.', recurrence: 'daily' },
-    { id: 'growth-read', name: 'Read 10 pages', domain: 'growth', reward: 30, description: 'Read something that helps you think or feel differently.', recurrence: 'daily' },
-    { id: 'growth-reflect', name: 'Write a short reflection', domain: 'growth', reward: 25, description: 'What felt good today? What is one thing you want to carry into tomorrow?', recurrence: 'daily' },
-    { id: 'reset-plan', name: 'Plan tomorrow’s top priority', domain: 'growth', reward: 25, description: 'Choose one important task and define the first tiny step.', recurrence: 'daily' },
-    { id: 'weekly-review', name: 'Review the week', domain: 'growth', reward: 60, description: 'Notice what worked, what you learned, and what you want to adjust.', recurrence: 'weekly' }
+    { id: 'study-focus', name: 'Focused study block', domain: 'study', reward: 60, estimateMinutes: 25, description: 'Complete one focused 25-minute study session.', recurrence: 'daily' },
+    { id: 'study-recall', name: 'Recall yesterday’s lesson', domain: 'study', reward: 35, estimateMinutes: 10, description: 'Write down what you remember before opening your notes.', recurrence: 'daily' },
+    { id: 'trading-journal', name: 'Write a market journal entry', domain: 'trading', reward: 40, estimateMinutes: 10, description: 'Note the setup, the risk, and one lesson. This is a learning exercise, not financial advice.', recurrence: 'once' },
+    { id: 'fitness-walk', name: 'Take a 20-minute walk', domain: 'fitness', reward: 45, estimateMinutes: 20, description: 'Get outside, move at a comfortable pace, and enjoy the reset.', recurrence: 'daily' },
+    { id: 'fitness-train', name: 'Complete a workout', domain: 'fitness', reward: 80, estimateMinutes: 45, description: 'Finish a session that fits your current energy and ability.', recurrence: 'weekly' },
+    { id: 'project-build', name: 'Build one small feature', domain: 'projects', reward: 70, estimateMinutes: 30, description: 'Turn one clear next step into something you can see or use.', recurrence: 'daily' },
+    { id: 'growth-read', name: 'Read 10 pages', domain: 'growth', reward: 30, estimateMinutes: 15, description: 'Read something that helps you think or feel differently.', recurrence: 'daily' },
+    { id: 'growth-reflect', name: 'Write a short reflection', domain: 'growth', reward: 25, estimateMinutes: 10, description: 'What felt good today? What is one thing you want to carry into tomorrow?', recurrence: 'daily' },
+    { id: 'reset-plan', name: 'Plan tomorrow’s top priority', domain: 'growth', reward: 25, estimateMinutes: 10, description: 'Choose one important task and define the first tiny step.', recurrence: 'daily' },
+    { id: 'weekly-review', name: 'Review the week', domain: 'growth', reward: 60, estimateMinutes: 30, description: 'Notice what worked, what you learned, and what you want to adjust.', recurrence: 'weekly' }
   ];
   const WEEKLY_CHALLENGES = [
     { id: 'quest-eight', type: 'quests', target: 8, title: 'Stack eight small wins', description: 'Complete 8 quests this week.' },
@@ -61,6 +63,7 @@
       name: item.name.trim().slice(0, 72),
       domain: QUEST_DOMAINS.includes(item.domain) ? item.domain : 'growth',
       reward: clamp(Number(item.reward) || 50, 5, 500),
+      estimateMinutes: QUEST_ESTIMATE_OPTIONS.includes(Number(item.estimateMinutes)) ? Number(item.estimateMinutes) : 15,
       description: String(item.description || '').slice(0, 180),
       recurrence,
       days: recurrence === 'weekly' ? validDays(item.days).length ? validDays(item.days) : [new Date().getDay()] : [],
@@ -94,6 +97,7 @@
   if (![25, 45, 60].includes(focusMinutes)) focusMinutes = 25;
   let breakMinutes = clamp(Number(localStorage.getItem('nexlife_break_minutes')) || 5, 5, 15);
   if (![5, 10, 15].includes(breakMinutes)) breakMinutes = 5;
+  let planMinutes = PLAN_BUDGET_OPTIONS.includes(Number(localStorage.getItem('nexlife_plan_minutes'))) ? Number(localStorage.getItem('nexlife_plan_minutes')) : 45;
   let timerMode = 'focus';
   let timerRemaining = focusMinutes * 60;
   let timerEndsAt = null;
@@ -134,6 +138,7 @@
       localStorage.setItem('nexlife_weekly_challenge', JSON.stringify(weeklyChallenge));
       localStorage.setItem('nexlife_focus_minutes', String(focusMinutes));
       localStorage.setItem('nexlife_break_minutes', String(breakMinutes));
+      localStorage.setItem('nexlife_plan_minutes', String(planMinutes));
       localStorage.setItem('nexlife_reminder_time', reminderTime);
       localStorage.setItem('nexlife_reminder_last_sent', reminderLastSent);
       if (bossCompleted) localStorage.setItem('nexlife_boss', getToday());
@@ -151,6 +156,28 @@
       if (quest.recurrence === 'weekly') return quest.days.includes(today.getDay());
       return quest.createdOn === getToday();
     });
+  }
+
+  function createQuestPlan(candidates, budgetMinutes) {
+    const budget = PLAN_BUDGET_OPTIONS.includes(Number(budgetMinutes)) ? Number(budgetMinutes) : 45;
+    const plans = Array(budget + 1).fill(null);
+    plans[0] = { xp: 0, minutes: 0, items: [] };
+    for (const quest of candidates) {
+      const minutes = QUEST_ESTIMATE_OPTIONS.includes(Number(quest.estimateMinutes)) ? Number(quest.estimateMinutes) : 15;
+      if (minutes > budget) continue;
+      for (let used = budget - minutes; used >= 0; used -= 1) {
+        const previous = plans[used];
+        if (!previous) continue;
+        const candidate = { xp: previous.xp + quest.reward, minutes: used + minutes, items: [...previous.items, quest] };
+        const existing = plans[candidate.minutes];
+        if (!existing || candidate.xp > existing.xp || (candidate.xp === existing.xp && candidate.items.length > existing.items.length)) plans[candidate.minutes] = candidate;
+      }
+    }
+    return plans.reduce((best, candidate) => {
+      if (!candidate) return best;
+      if (!best || candidate.xp > best.xp || (candidate.xp === best.xp && candidate.items.length > best.items.length) || (candidate.xp === best.xp && candidate.items.length === best.items.length && candidate.minutes < best.minutes)) return candidate;
+      return best;
+    }, null) || { xp: 0, minutes: 0, items: [] };
   }
 
   function checkNewDay() {
@@ -248,6 +275,38 @@
     toastTimeout = window.setTimeout(() => els.toast.classList.remove('show'), duration);
   }
 
+  function renderFocusPlan() {
+    const budgetSelect = $('#plannerBudget');
+    if (!budgetSelect) return;
+    budgetSelect.value = String(planMinutes);
+    const list = $('#plannerList');
+    list.replaceChildren();
+    const candidates = getTodayQuests().filter((quest) => !quest.completed);
+    const plan = createQuestPlan(candidates, planMinutes);
+    $('#plannerSummary').textContent = `${plan.minutes} / ${planMinutes} min planned`;
+    $('#plannerReward').textContent = `+${formatNumber(plan.xp)} XP`;
+    $('#plannerProgress').style.width = `${(plan.minutes / planMinutes) * 100}%`;
+    const track = $('#plannerTimeTrack');
+    track.setAttribute('aria-valuemax', String(planMinutes));
+    track.setAttribute('aria-valuenow', String(plan.minutes));
+    if (!plan.items.length) {
+      $('#plannerHint').textContent = candidates.length ? 'No unfinished quest fits this window yet. Choose more time or lower a task estimate.' : 'All quests scheduled for today are complete. Enjoy the space you made.';
+      return;
+    }
+    $('#plannerHint').textContent = `${plan.items.length} ${plan.items.length === 1 ? 'quest' : 'quests'} selected for the most XP within your time.`;
+    for (const quest of plan.items) {
+      const item = document.createElement('li'); item.className = 'planner-item';
+      const copy = document.createElement('span'); copy.className = 'planner-item-copy';
+      const title = document.createElement('strong'); title.textContent = quest.name;
+      const detail = document.createElement('small'); detail.textContent = `${quest.estimateMinutes} min · ${DOMAIN_NAMES[quest.domain]}`;
+      copy.append(title, detail);
+      const complete = document.createElement('button'); complete.type = 'button'; complete.className = 'planner-complete'; complete.dataset.id = quest.id;
+      complete.setAttribute('aria-label', `Complete ${quest.name} from your time plan`); complete.textContent = `+${quest.reward} XP`;
+      complete.addEventListener('click', () => completeQuest(quest.id));
+      item.append(copy, complete); list.append(item);
+    }
+  }
+
   function renderQuests() {
     const todayQuests = getTodayQuests();
     const visibleQuests = todayQuests.filter((quest) => activeFilter === 'active' ? !quest.completed : activeFilter === 'completed' ? quest.completed : true);
@@ -262,6 +321,7 @@
       else empty.innerHTML = '<strong>Your day is a blank page.</strong>Add a small quest to get your momentum going.';
       els.questList.append(empty);
       updateDailyProgress();
+      renderFocusPlan();
       return;
     }
     for (const quest of visibleQuests) {
@@ -277,7 +337,7 @@
       const description = document.createElement('div'); description.className = 'quest-description'; description.textContent = quest.description || 'A small step, just for today.';
       const domain = document.createElement('span'); domain.className = 'quest-domain';
       const repeatLabel = quest.recurrence === 'daily' ? ' · Daily' : quest.recurrence === 'weekly' ? ` · Weekly (${quest.days.map(dayShortName).join(', ')})` : ' · Today';
-      domain.textContent = `${DOMAIN_ICONS[quest.domain]}  ${DOMAIN_NAMES[quest.domain]}${repeatLabel}`;
+      domain.textContent = `${DOMAIN_ICONS[quest.domain]}  ${DOMAIN_NAMES[quest.domain]}${repeatLabel} · ${quest.estimateMinutes} min`;
       main.append(title, description, domain);
       const reward = document.createElement('span'); reward.className = 'quest-xp'; reward.textContent = `+${quest.reward} XP`;
       const actions = document.createElement('div'); actions.className = 'quest-actions';
@@ -288,6 +348,7 @@
       els.questList.append(card);
     }
     updateDailyProgress();
+    renderFocusPlan();
   }
 
   function completeQuest(id) {
@@ -296,7 +357,7 @@
     quest.completed = true;
     const record = ensureDayRecord();
     record.quests += 1;
-    record.completedItems.push({ id: quest.id, name: quest.name, domain: quest.domain, xp: quest.reward, at: new Date().toISOString() });
+    record.completedItems.push({ id: quest.id, name: quest.name, domain: quest.domain, xp: quest.reward, estimateMinutes: quest.estimateMinutes, at: new Date().toISOString() });
     addXP(quest.reward);
     persistState();
     renderQuests();
@@ -689,7 +750,7 @@
   }
 
   function openQuestModal(options = {}) {
-    $('#questForm').reset(); $('#questReward').value = '50'; $('#questRecurrence').value = 'once'; setWeekdayCheckboxes([]);
+    $('#questForm').reset(); $('#questReward').value = '50'; $('#questEstimate').value = '15'; $('#questRecurrence').value = 'once'; setWeekdayCheckboxes([]);
     editingQuestId = null;
     $('#questModalTitle').textContent = 'Create a quest';
     $('#questModalDescription').textContent = 'Give your next small win a name. You can always change direction.';
@@ -697,13 +758,13 @@
     if (options.questId) {
       const quest = quests.find((item) => item.id === options.questId); if (!quest) return;
       editingQuestId = quest.id;
-      $('#questName').value = quest.name; $('#questDomain').value = quest.domain; $('#questReward').value = quest.reward;
+      $('#questName').value = quest.name; $('#questDomain').value = quest.domain; $('#questReward').value = quest.reward; $('#questEstimate').value = String(quest.estimateMinutes);
       $('#questDescription').value = quest.description; $('#questRecurrence').value = quest.recurrence; setWeekdayCheckboxes(quest.days);
       $('#questModalTitle').textContent = 'Edit quest'; $('#questModalDescription').textContent = 'Change the details, schedule, or reward for this mission.';
       $('#saveQuestButton').innerHTML = 'Save changes <span>→</span>';
     } else if (options.template) {
       const template = options.template;
-      $('#questName').value = template.name; $('#questDomain').value = template.domain; $('#questReward').value = template.reward;
+      $('#questName').value = template.name; $('#questDomain').value = template.domain; $('#questReward').value = template.reward; $('#questEstimate').value = String(template.estimateMinutes || 15);
       $('#questDescription').value = template.description; $('#questRecurrence').value = template.recurrence || 'daily';
       if ($('#questRecurrence').value === 'weekly') setWeekdayCheckboxes([new Date().getDay()]);
     } else if (options.domain && QUEST_DOMAINS.includes(options.domain)) $('#questDomain').value = options.domain;
@@ -716,6 +777,7 @@
     event.preventDefault();
     const name = $('#questName').value.trim(); const domain = $('#questDomain').value;
     const reward = clamp(Number($('#questReward').value) || 50, 5, 500); const description = $('#questDescription').value.trim();
+    const estimateMinutes = QUEST_ESTIMATE_OPTIONS.includes(Number($('#questEstimate').value)) ? Number($('#questEstimate').value) : 15;
     const recurrence = $('#questRecurrence').value;
     const days = recurrence === 'weekly' ? validDays($$('input[name="weekday"]:checked').map((input) => Number(input.value))) : [];
     if (!name || !QUEST_DOMAINS.includes(domain)) return;
@@ -723,11 +785,11 @@
     if (editingQuestId) {
       const index = quests.findIndex((quest) => quest.id === editingQuestId); if (index < 0) return;
       const old = quests[index];
-      quests[index] = normalizeQuest({ ...old, name, domain, reward, description, recurrence, days, createdOn: recurrence === 'once' ? getToday() : old.createdOn });
+      quests[index] = normalizeQuest({ ...old, name, domain, reward, estimateMinutes, description, recurrence, days, createdOn: recurrence === 'once' ? getToday() : old.createdOn });
       showToast('Quest updated. Nice and clear.');
     } else {
       const id = globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `quest-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-      quests.push(normalizeQuest({ id, name, domain, reward, description, recurrence, days, createdOn: getToday(), completed: false }));
+      quests.push(normalizeQuest({ id, name, domain, reward, estimateMinutes, description, recurrence, days, createdOn: getToday(), completed: false }));
       showToast('Quest added. Make it yours.');
     }
     persistState(); setFilter('all'); updateBoss(); closeModal(els.questModal);
@@ -741,7 +803,7 @@
       const content = document.createElement('span'); content.className = 'template-copy';
       const title = document.createElement('strong'); title.textContent = template.name;
       const description = document.createElement('small'); description.textContent = template.description;
-      const footer = document.createElement('span'); footer.className = 'template-footer'; footer.textContent = `+${template.reward} XP · ${template.recurrence === 'weekly' ? 'Weekly' : template.recurrence === 'daily' ? 'Daily' : 'One time'}`;
+      const footer = document.createElement('span'); footer.className = 'template-footer'; footer.textContent = `+${template.reward} XP · ${template.estimateMinutes || 15} min · ${template.recurrence === 'weekly' ? 'Weekly' : template.recurrence === 'daily' ? 'Daily' : 'One time'}`;
       content.append(title, description, footer); const arrow = document.createElement('span'); arrow.className = 'template-arrow'; arrow.textContent = '→';
       button.append(icon, content, arrow); button.addEventListener('click', () => { closeModal(els.templateModal); openQuestModal({ template }); }); grid.append(button);
     }
@@ -756,7 +818,7 @@
     const backup = {
       app: 'NEXLIFE', version: 2, exportedAt: new Date().toISOString(), playerName, quests, totalXP, todayXP, streak, lastActive,
       currentDay: getToday(), bossCompleted, dailyHistory, achievementClaims: [...achievementClaims], weeklyChallenge,
-      focusMinutes, breakMinutes, reminderTime, theme: currentTheme
+      focusMinutes, breakMinutes, planMinutes, reminderTime, theme: currentTheme
     };
     const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob); const link = document.createElement('a');
@@ -783,9 +845,10 @@
       weeklyChallenge = backup.weeklyChallenge && backup.weeklyChallenge.weekKey === getWeekStart() ? backup.weeklyChallenge : null;
       focusMinutes = [25, 45, 60].includes(Number(backup.focusMinutes)) ? Number(backup.focusMinutes) : 25;
       breakMinutes = [5, 10, 15].includes(Number(backup.breakMinutes)) ? Number(backup.breakMinutes) : 5;
+      planMinutes = PLAN_BUDGET_OPTIONS.includes(Number(backup.planMinutes)) ? Number(backup.planMinutes) : 45;
       reminderTime = ['off', '09:00', '12:00', '17:00', '20:00'].includes(backup.reminderTime) ? backup.reminderTime : 'off';
       if (backup.theme === 'light' || backup.theme === 'dark') applyTheme(backup.theme);
-      $('#focusDuration').value = String(focusMinutes); $('#breakDuration').value = String(breakMinutes); $('#reminderTime').value = reminderTime;
+      $('#focusDuration').value = String(focusMinutes); $('#breakDuration').value = String(breakMinutes); $('#plannerBudget').value = String(planMinutes); $('#reminderTime').value = reminderTime;
       timerMode = 'focus'; timerRemaining = focusMinutes * 60; persistState(); renderQuests(); updatePlayer(); updateDailyProgress(); renderWeek(); renderWeeklyChallenge();
       renderAchievements(); renderHistory(); updateReminderStatus(); closeModal(els.profileModal); showToast('Backup restored. Your progress is back.'); checkAchievements();
     } catch (error) {
@@ -910,6 +973,13 @@
     $('#focusDuration').value = String(focusMinutes); $('#breakDuration').value = String(breakMinutes);
     $('#dailyJournalForm').addEventListener('submit', saveDailyJournal);
     $('#journalEntry').addEventListener('input', updateJournalCount);
+    $('#plannerBudget').value = String(planMinutes);
+    $('#plannerBudget').addEventListener('change', (event) => {
+      const selected = Number(event.target.value);
+      planMinutes = PLAN_BUDGET_OPTIONS.includes(selected) ? selected : 45;
+      persistState();
+      renderFocusPlan();
+    });
     $('#focusDuration').addEventListener('change', () => { focusMinutes = Number($('#focusDuration').value); persistState(); resetTimer(); });
     $('#breakDuration').addEventListener('change', () => { breakMinutes = Number($('#breakDuration').value); if (timerMode === 'break') { timerRemaining = breakMinutes * 60; } persistState(); updateTimerDisplay(); });
     $('#reminderTime').value = reminderTime; $('#reminderTime').addEventListener('change', (event) => setReminderTime(event.target.value));
